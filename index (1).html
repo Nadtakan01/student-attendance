@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ระบบเช็คชื่อนักเรียนออนไลน์</title>
+  <style>
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background-color: #f0fff0;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2e7d32;
+    }
+    label, select, input, button {
+      font-size: 16px;
+      margin: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #a5d6a7;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #66bb6a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4caf50;
+    }
+  </style>
+</head>
+<body>
+  <h1>ระบบเช็คชื่อนักเรียนออนไลน์</h1>
+  <label>วันที่: <input type="date" id="datePicker"></label>
+  <label>ชั้นเรียน:
+    <select id="classSelect">
+      <option value="">-- เลือกชั้น --</option>
+      <option value="ป.2">ป.2</option>
+    </select>
+  </label>
+  <label>รายวิชา:
+    <select id="subjectSelect">
+      <option value="">-- เลือกรายวิชา --</option>
+      <option value="คณิตศาสตร์">คณิตศาสตร์</option>
+      <option value="ภาษาไทย">ภาษาไทย</option>
+      <option value="อังกฤษ">อังกฤษ</option>
+    </select>
+  </label>
+  <br/>
+  <button onclick="loadStudents()">โหลดรายชื่อ</button>
+  <button onclick="submitAttendance()">บันทึกข้อมูล</button>
+  <button onclick="loadAttendance()">เรียกดูข้อมูลย้อนหลัง</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>เลขที่</th>
+        <th>ชื่อ</th>
+        <th>สถานะ</th>
+      </tr>
+    </thead>
+    <tbody id="studentsTableBody"></tbody>
+  </table>
+
+  <script>
+    const localStudentData = {
+      "ป.2": [
+        { no: 1, name: "เด็กชายณัฐภัทร สมศรี" },
+        { no: 2, name: "เด็กชายจิรทัศน์ นมัสการ" },
+        { no: 3, name: "เด็กชายณัชพล เต้นรัมย์" },
+        { no: 4, name: "เด็กชายพัสกร ทองร้อย" },
+        { no: 5, name: "เด็กชายวีรชัย แสนวัง" },
+        { no: 6, name: "เด็กชายพงศธร ปรางศรี" },
+        { no: 7, name: "เด็กชายกิตติ์จีระภูมิ นามศรีหาร" },
+        { no: 8, name: "เด็กชายจิรเดช คำเลิศ" },
+        { no: 9, name: "เด็กชายปฐวี ขามพยา" },
+        { no: 10, name: "เด็กหญิงนภัสรา ปกลงรัมย์" },
+        { no: 11, name: "เด็กหญิงอภิญญา อภัยโส" },
+        { no: 12, name: "เด็กหญิงวรัชญาน์ แสงธรรม" },
+        { no: 13, name: "เด็กหญิงพิมพ์ประภา จันมาทูล" },
+        { no: 14, name: "เด็กหญิงจรรยพร มาลัย" },
+        { no: 15, name: "เด็กหญิงธันยพร โสภากุ" },
+        { no: 16, name: "เด็กหญิงจิราพัชร กอชารี" },
+        { no: 17, name: "เด็กหญิงอารดา ราชบาศรี" }
+      ]
+    };
+
+    function loadStudents() {
+      const className = document.getElementById("classSelect").value;
+      if (!className) return alert("กรุณาเลือกชั้นเรียน");
+
+      const students = localStudentData[className];
+      if (!students) return alert("ไม่พบรายชื่อชั้นนี้");
+
+      const tbody = document.getElementById("studentsTableBody");
+      tbody.innerHTML = "";
+      students.forEach((student, index) => {
+        const row = `<tr>
+          <td>${student.no}</td>
+          <td>${student.name}</td>
+          <td>
+            <select data-no="${student.no}" data-name="${student.name}">
+              <option value="มา">✅ มา</option>
+              <option value="สาย">🕒 สาย</option>
+              <option value="ลา">📝 ลา</option>
+              <option value="ขาด">❌ ขาด</option>
+            </select>
+          </td>
+        </tr>`;
+        tbody.insertAdjacentHTML("beforeend", row);
+      });
+    }
+
+    function submitAttendance() {
+      alert("ฟังก์ชันบันทึกยังไม่ได้เชื่อมต่อฐานข้อมูล หากต้องการให้บันทึกได้จริง ต้องใช้ Google Apps Script หรือ Firebase เพิ่มเติม");
+    }
+
+    function loadAttendance() {
+      alert("ฟังก์ชันดูย้อนหลังยังไม่ได้เชื่อมต่อฐานข้อมูล");
+    }
+  </script>
+</body>
+</html>
